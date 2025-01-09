@@ -1,7 +1,7 @@
 import { MdDeleteSweep } from "react-icons/md";
 import PropTypes from "prop-types";
 
-function OneWishListItem({wishOneItem, handlewisLisRemove}) {
+function OneWishListItem({wishOneItem, handlewisLisRemove, cartAddnDel}) {
   return (
     <div className="onewishlistitem">
     <div className="wishprodinfo">
@@ -19,7 +19,7 @@ function OneWishListItem({wishOneItem, handlewisLisRemove}) {
     <h2>{wishOneItem.availabilityStatus}</h2>
     </div>
     <div className="wishprodhandle">
-      <button>Add to cart</button>
+      <button onClick={()=> cartAddnDel(wishOneItem)}>Add to cart</button>
       <MdDeleteSweep onClick={()=> handlewisLisRemove(wishOneItem)} className="wishoneitemdel" />
     </div>
   </div>

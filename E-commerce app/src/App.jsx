@@ -5,8 +5,14 @@ import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import Loader from "./components/loader";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function App() {
+
+
+  // IS AUTHENTICATED STATE
+  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+
   // FILTERING FUNCTIONALITY
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]); // To store all products initially
@@ -111,6 +117,7 @@ function App() {
       0
     );
   };
+
   // Function to display stars based on rating
   const renderStars = (rating) => {
     const stars = [];
@@ -135,8 +142,8 @@ function App() {
 
     return stars;
   };
-  // Function to show product detail
 
+  // Function to show product detail
   const [detailspage, setdetailspage] = useState(false);
   const [showedAProductDetails, setshowedAProductDetails] = useState([]);
   const [showedImageOnclickOfProduct, setshowedImageOnclickOfProduct] = useState('')
@@ -160,33 +167,49 @@ function App() {
   };
 
   //  WISHLIST ADDING FUNCTIONALITY
-
-
   const [productsInWishList, setproductsInWishList] = useState([]);
   const wishAddnDel = (elem) => {
-    const isProductInWishList = productsInWishList.some(
-      (product) => product.id === elem.id
+ if(isAuthenticated){
+  const isProductInWishList = productsInWishList.some(
+    (product) => product.id === elem.id
+  );
+  if (isProductInWishList) {
+    // If the product is already in the wishlist, remove it
+    const updatedWishList = productsInWishList.filter(
+      (product) => product.id !== elem.id
     );
-  
-    if (isProductInWishList) {
-      // If the product is already in the wishlist, remove it
-      const updatedWishList = productsInWishList.filter(
-        (product) => product.id !== elem.id
-      );
-      setproductsInWishList(updatedWishList);
-      console.log("Product removed from wishlist");
-    } else {
-      // If the product is not in the wishlist, add it
-      const updatedWishList = [elem, ...productsInWishList];
-      setproductsInWishList(updatedWishList);
-      console.log("Product added to wishlist");
-    }
+    setproductsInWishList(updatedWishList);
+    console.log("Product removed from wishlist");
+  } else {
+    // If the product is not in the wishlist, add it
+    const updatedWishList = [elem, ...productsInWishList];
+    setproductsInWishList(updatedWishList);
+    console.log("Product added to wishlist");
+  }
+ }
+ else {
+  alert('please login to avail wishlist feature')
+ }
   };
+
   const handlewisLisRemove = (product) => {
     const updatedCartofwislist = productsInWishList.filter((item) => item.id !== product.id);
     setproductsInWishList(updatedCartofwislist);
     console.log("remove wis cliked");
   };
+
+
+// cart components functions
+const subtotal = calculateSubtotal();
+const discount = subtotal > 1000 ? 80 : 20;
+const delivery = subtotal > 1000 ? 20 : 50; // $120 discount if subtotal > $1000, otherwise $20
+const total = subtotal + 50 - discount;
+
+
+
+
+
+
 
   return (
     <>
@@ -197,6 +220,10 @@ function App() {
       Search={Search}
       setSearch={setSearch}
       filterOnSearch={filterOnSearch}
+      isAuthenticated={isAuthenticated}
+      loginWithRedirect={loginWithRedirect}
+      logout={logout}
+      user={user}
     />
     <Navigation
       Search={Search}
@@ -226,6 +253,10 @@ function App() {
       wishAddnDel={wishAddnDel}
       productsInWishList={productsInWishList}
       handlewisLisRemove={handlewisLisRemove}
+      total={total}
+      discount={discount}
+      delivery={delivery}
+      subtotal={subtotal}
     ></Navigation>
     <Footer />
   </BrowserRouter>

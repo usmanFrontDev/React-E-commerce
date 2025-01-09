@@ -4,6 +4,9 @@ import Shop from "./Shop";
 import Cart from "./Cart";
 import PropTypes from "prop-types";
 import WishList from "./WishList";
+import Contact from "./Contact";
+import CheckOutPage from "./CheckOutPage";
+import AdminPannel from "./AdminPannel";
 
 function Navigation({
   products,
@@ -25,6 +28,10 @@ function Navigation({
   wishAddnDel,
   productsInWishList,
   handlewisLisRemove,
+  total,
+  discount,
+  delivery,
+  subtotal,
 }) {
   return (
     <>
@@ -69,18 +76,37 @@ function Navigation({
               handleDecrement={handleDecrement}
               handleRemove={handleRemove}
               calculateSubtotal={calculateSubtotal}
+              total={total}
+              discount={discount}
+              delivery={delivery}
+              subtotal={subtotal}
             />
           }
         ></Route>
         <Route
-        path="/wishlist"
-        element={
-          <WishList 
-           productsInWishList={productsInWishList}
-           handlewisLisRemove={handlewisLisRemove}
-          />
-        } 
+          path="/wishlist"
+          element={
+            <WishList
+              productsInWishList={productsInWishList}
+              handlewisLisRemove={handlewisLisRemove}
+              cartAddnDel={cartAddnDel}
+            />
+          }
         ></Route>
+        <Route path="/contact" element={<Contact />}></Route>
+        <Route
+          path="/checkout"
+          element={
+            <CheckOutPage
+              calculateSubtotal={calculateSubtotal}
+              total={total}
+              productsInCart={productsInCart}
+            />
+          }
+        ></Route>
+
+        <Route path="/adminpannel" element={<AdminPannel total={total} />}></Route>
+
       </Routes>
     </>
   );
@@ -102,10 +128,14 @@ Navigation.propTypes = {
   handleRemove: PropTypes.func.isRequired,
   calculateSubtotal: PropTypes.func.isRequired,
   renderStars: PropTypes.func.isRequired,
-  handleMouseMove:PropTypes.func.isRequired,
-  wishAddnDel:PropTypes.func.isRequired,
+  handleMouseMove: PropTypes.func.isRequired,
+  wishAddnDel: PropTypes.func.isRequired,
   productsInWishList: PropTypes.array.isRequired,
   handlewisLisRemove: PropTypes.func.isRequired,
+  total: PropTypes.func.isRequired,
+  discount: PropTypes.func.isRequired,
+  delivery: PropTypes.func.isRequired,
+  subtotal: PropTypes.func.isRequired,
 };
 
 export default Navigation;

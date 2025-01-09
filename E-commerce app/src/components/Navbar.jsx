@@ -3,12 +3,11 @@ import { FaTruck } from "react-icons/fa";
 import { CiLogin } from "react-icons/ci";
 import { CiLogout } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
-import { useAuth0 } from "@auth0/auth0-react";
 import { IoIosPerson } from "react-icons/io";
 import { Link } from "react-router-dom";
 
-function Navbar({ Search, setSearch, filterOnSearch }) {
-  const { loginWithRedirect, logout, user, isAuthenticated } = useAuth0();
+function Navbar({ Search, setSearch, filterOnSearch, isAuthenticated, user, logout, loginWithRedirect }) {
+
 
   return (
     <>
@@ -93,11 +92,15 @@ function Navbar({ Search, setSearch, filterOnSearch }) {
                   Cart
                 </Link>
               </li>
-              <li>
-                <Link to="/wishlist" className="link">
-                  WishList
-                </Link>
-              </li>
+              {isAuthenticated ? (
+                <li>
+                  <Link to="/wishlist" className="link">
+                    WishList
+                  </Link>
+                </li>
+              ) : (
+               ""
+              )}
               <li>
                 <Link to="/about" className="link">
                   About
@@ -105,8 +108,17 @@ function Navbar({ Search, setSearch, filterOnSearch }) {
               </li>
               <li>
                 <Link to="/contact" className="link">
-                  Contact
+                  Contact  
                 </Link>
+              </li>
+              <li>
+                {isAuthenticated ?
+                <Link to="/adminpannel" className="link">
+                AdminPannel
+              </Link>:
+              ''  
+              }
+              
               </li>
             </ul>
           </div>

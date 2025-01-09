@@ -6,6 +6,7 @@ import { IoChatbubbleSharp } from "react-icons/io5";
 import { ImGift } from "react-icons/im";
 import PropTypes from "prop-types";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Cart({
   productsInCart,
@@ -13,6 +14,10 @@ function Cart({
   handleDecrement,
   handleRemove,
   calculateSubtotal,
+  total,
+  discount,
+  delivery, 
+  subtotal,
 }) {
   const [CardBannerBottomState] = useState([
     {
@@ -36,11 +41,6 @@ function Cart({
       para: "for your loved one in any amount",
     },
   ]);
-
-  const subtotal = calculateSubtotal();
-  const discount = subtotal > 1000 ? 80 : 20;
-  const delivery = subtotal > 1000 ? 20 : 50; // $120 discount if subtotal > $1000, otherwise $20
-  const total = subtotal + 50 - discount;
 
   const infoCash = [
     { key: "cart subtotal", word: `$${subtotal.toFixed(2)}` },
@@ -86,6 +86,11 @@ function Cart({
             ))}
             <button>apply</button>
           </div>
+          <button>
+            <Link to="/checkout">
+              checkout
+            </Link>
+          </button>
         </div>
       </div>
       <CartBottomBanner CardBannerBottomState={CardBannerBottomState} />
@@ -99,6 +104,11 @@ Cart.propTypes = {
   handleDecrement: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
   calculateSubtotal: PropTypes.func.isRequired,
+  total: PropTypes.func.isRequired,
+  discount: PropTypes.func.isRequired,
+  delivery: PropTypes.func.isRequired,
+  subtotal: PropTypes.func.isRequired,
 };
 
 export default Cart;
+
